@@ -1,0 +1,20 @@
+@(course: Course, students: Array[Student])
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Student in Course</title>
+</head>
+<body>
+	<h1>Môn: @course.getName()</h1>
+	<h1>Danh sách học viên</h1>
+	<ul>
+	@for(student <- students){
+		<li>
+			@student.getId() - @student.getName() <br>
+		</li>
+	}
+	</ul>
+</body>
+</html>
