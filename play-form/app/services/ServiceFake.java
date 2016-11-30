@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import models.*;
 
 @Singleton
@@ -31,7 +33,7 @@ public final class ServiceFake implements MyService{
 	}
 	
 	
-	public List<Student> allStudentInCourse(Integer id) {
+	public ArrayNode allStudentInCourse(Integer id) {
 		return null;
 	}
 

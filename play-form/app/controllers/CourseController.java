@@ -13,6 +13,8 @@ import javax.inject.Singleton;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.Transactional;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import controllers.responses.ErrorResponse;
 import controllers.responses.SuccessResponse;
@@ -68,13 +70,48 @@ public class CourseController extends Controller{
 	
 	
 	public Result getAllStudentOfCourse(Integer id) {
-		List<Student> studentList = myService.allStudentInCourse(id);
-		return ok(Json.toJson(studentList));	
+		ArrayNode studentArrayNode = myService.allStudentInCourse(id);
+		return ok(studentArrayNode);	
 	}
 	
 	public Result createNewCourse() {
-		return ok("ok");
+		Form<Course> courseForm = formFactory.form(Course.class).bindFromRequest();
+		if (courseForm.hasErrors()) {
+			ErrorResponse response = new ErrorResponse(1, courseForm.errorsAsJson().toString());
+			return badRequest(Json.toJson(response));
+		} else {
+			Course course = courseForm.get();
+			Course newCourse = myService.createCourse(course);
+			SuccessResponse response = new SuccessResponse(newCourse);
+			return ok(Json.toJson(response));
+		}
 	}
 	
+	public Result updateCourse() {
+		Form<Course> courseForm = formFactory.form(Course.class).bindFromRequest();
+		if(courseForm.hasErrors()) {
+			ErrorResponse response = new ErrorResponse(1, courseForm.errorsAsJson().toString());
+			return badRequest(Json.toJson(response));
+		} else {
+			Course course = courseForm.get();
+			Course newCourse = myService.updateCourse(course);
+			SuccessResponse response = new SuccessResponse(newCourse);
+			return ok(Json.toJson(response));
+		}
+	}
+	
+	
+	public Result deleteCourse(Integer id) {
+		if (myService.deleteProject(id)) {
+			ObjectNode result = Json.newObject();
+			result.put("message", "Deleted course with id " + id);
+			SuccessResponse response = new SuccessResponse(result);
+			return ok(Json.toJson(response));
+		} else {
+			ErrorResponse response = new ErrorResponse(1, 
+					"Not found course with id " + id);
+			return notFound(Json.toJson(response));
+		}
+	}
 
 }

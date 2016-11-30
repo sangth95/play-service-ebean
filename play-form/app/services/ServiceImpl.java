@@ -4,8 +4,14 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import models.Course;
 import models.Student;
+
+
 
 @Singleton
 public class ServiceImpl implements MyService{
@@ -38,9 +44,23 @@ public class ServiceImpl implements MyService{
 		return Course.find.all();
 	}
 	
-	public List<Student> allStudentInCourse(Integer id) {
+	public ArrayNode allStudentInCourse(Integer id) {
 		List<Student> studentList = Student.find.select("*").where().eq("class_id", id).findList();
-		return studentList;
+		//json object
+		JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+		
+		ArrayNode arrayNode = nodeFactory.arrayNode();
+		
+		for (Student student: studentList) {
+			ObjectNode nodeStudent = nodeFactory.objectNode();
+			
+			nodeStudent.put("id", student.getId());
+			nodeStudent.put("name", student.getName());
+			nodeStudent.put("course_name", student.getCourse().getName());
+			
+			arrayNode.add(nodeStudent);
+		}
+		return arrayNode;
 	}
 
 	public Integer countCourse() {

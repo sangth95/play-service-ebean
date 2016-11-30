@@ -2,6 +2,8 @@ package services;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import models.*;
 
 public interface MyService {
@@ -18,7 +20,7 @@ public interface MyService {
 	
 	List<Course> allCourse();
 	
-	List<Student> allStudentInCourse(Integer id);
+	ArrayNode allStudentInCourse(Integer id);
 	
 	Integer countCourse();
 	

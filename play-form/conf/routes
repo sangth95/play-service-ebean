@@ -17,10 +17,13 @@ GET		/courses					controllers.CourseController.getAllCourses()
 
 GET		/courses/:id				controllers.CourseController.read(id: Integer)
 
-GET		/courses/create/			controllers.CourseController.createNewCourse()
+POST	/courses					controllers.CourseController.createNewCourse()
 
 GET		/courses/all/:id			controllers.CourseController.getAllStudentOfCourse(id: Integer)
 
+PUT		/courses					controllers.CourseController.updateCourse()
+
+DELETE	/courses/:id				controllers.CourseController.deleteCourse(id: Integer)
 
 #Student
 GET		/student					controllers.StudentController.getAllStudent()
